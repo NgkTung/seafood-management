@@ -3,24 +3,34 @@ import { SignJWT } from "jose";
 import { NextResponse } from "next/server";
 
 const permissionMap: Record<string, string[]> = {
-  "Full Access": ["*"],
+  Administrator: ["*"],
 
-  // You can expand based on your DB values:
-  "QC Only": ["qc.create", "batch.view"],
-  Warehouse: ["inventory.manage", "shipment.manage"],
-  Sales: ["order.create", "customer.view"],
+  "QC Inspector": ["qc.create", "batch.view"],
+
+  "Warehouse Manager": ["inventory.manage", "batch.view", "shipment.view"],
+
+  "Sales Officer": ["order.create", "customer.view", "product.view"],
+
   "Export Manager": ["order.approve", "reports.view"],
-  Accountant: ["invoice.view"],
-  Director: ["reports.view"],
-  Intern: [],
 
-  // fallback
+  "Logistics Staff": ["shipment.create", "documents.manage"],
+
+  Accountant: ["invoice.view", "payments.manage"],
+
+  Director: ["reports.view", "dashboard.view"],
+
+  "IT Support": ["users.manage"],
+
+  Intern: [
+    "view.only", // or []
+  ],
+
   "": [],
 };
 
 export async function POST(req: Request) {
   try {
-    const { email, password } = await req.json();
+    const { email } = await req.json();
 
     // Fetch user
     const [rows]: any = await db.execute(
@@ -47,15 +57,19 @@ export async function POST(req: Request) {
     // }
 
     // Fetch permissions from Role table
+    // Fetch permissions from Role table
     const [roleRows]: any = await db.execute(
-      "SELECT Permissions FROM role WHERE Role_ID = ?",
+      "SELECT Role_Name FROM role WHERE Role_ID = ?",
       [user.Role_ID]
     );
 
-    const permText: string = roleRows[0]?.Permissions || "";
+    console.log("ROLE ROWS: ", roleRows);
 
-    // Convert text → permissions array
-    const permissions = permissionMap[permText] || [];
+    // Get roleName
+    const roleName: string = roleRows[0]?.Role_Name || "";
+
+    // Map to actual permissions
+    const permissions = permissionMap[roleName] || [];
 
     // Create JWT
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);

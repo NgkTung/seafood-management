@@ -1,27 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { jwtDecode } from "jwt-decode";
+import { useProfile } from "@/hooks/auth/profile";
 
 export default function Dashboard() {
-  const [permissions, setPermissions] = useState<string[] | null>(null);
+  const { data, isLoading } = useProfile();
 
-  useEffect(() => {
-    const token = document.cookie
-      .split("; ")
-      .find((x) => x.startsWith("token="))
-      ?.split("=")[1];
+  if (isLoading) return "Loading...";
+  if (!data?.user) return "Unauthorized";
 
-    if (token) {
-      const decoded: any = jwtDecode(token);
-      setPermissions(decoded.permissions || []);
-    }
-  }, []);
-
-  if (!permissions) return "Loading...";
+  const permissions = data.user.permissions || [];
 
   const can = (perm: string) => {
-    if (permissions.includes("*")) return true; // admin shortcut
+    if (permissions.includes("*")) return true;
     return permissions.includes(perm);
   };
 
