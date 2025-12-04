@@ -3,6 +3,7 @@ import { jwtVerify } from "jose";
 
 const pagePermissions = {
   "/qc": ["qc.create"],
+  "/batches": ["batch.view"],
   "/inventory": ["inventory.manage"],
   "/orders": ["order.create"],
   "/reports": ["reports.view"],
@@ -77,6 +78,7 @@ export async function middleware(req) {
 export const config = {
   matcher: [
     "/dashboard/:path*",
+    "/batches/:path*",
     "/qc/:path*",
     "/inventory/:path*",
     "/orders/:path*",

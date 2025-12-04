@@ -11,7 +11,9 @@ import {
   BarChart2,
   Truck,
   Settings,
+  Boxes,
 } from "lucide-react";
+import { useProfile } from "@/hooks/auth/profile";
 
 type SidebarProps = {
   mobile?: boolean;
@@ -19,15 +21,48 @@ type SidebarProps = {
 
 export default function Sidebar({ mobile = false }: SidebarProps) {
   const pathname = usePathname();
+  const { data } = useProfile();
+  const permissions = data?.user?.permissions || [];
+
+  const can = (perm: string) => {
+    if (permissions.includes("*")) return true;
+    return permissions.includes(perm);
+  };
 
   const links = [
-    { href: "/dashboard", label: "Dashboard", icon: Home },
-    { href: "/qc", label: "Quality Control", icon: ClipboardList },
-    { href: "/inventory", label: "Inventory", icon: Package },
-    { href: "/orders", label: "Orders", icon: SquareKanban },
-    { href: "/reports", label: "Reports", icon: BarChart2 },
-    { href: "/shipment", label: "Shipment", icon: Truck },
-    { href: "/admin", label: "Admin", icon: Settings },
+    { href: "/dashboard", label: "Dashboard", icon: Home, perm: "" },
+    { href: "/batches", label: "Batches", icon: Boxes, perm: "batch.view" },
+    {
+      href: "/qc",
+      label: "Quality Control",
+      icon: ClipboardList,
+      perm: "qc.create",
+    },
+    {
+      href: "/inventory",
+      label: "Inventory",
+      icon: Package,
+      perm: "inventory.manage",
+    },
+    {
+      href: "/orders",
+      label: "Orders",
+      icon: SquareKanban,
+      perm: "order.create",
+    },
+    {
+      href: "/reports",
+      label: "Reports",
+      icon: BarChart2,
+      perm: "reports.view",
+    },
+    {
+      href: "/shipment",
+      label: "Shipment",
+      icon: Truck,
+      perm: "shipment.manage",
+    },
+    { href: "/admin", label: "Admin", icon: Settings, perm: "*" },
   ];
 
   return (
@@ -41,6 +76,8 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
 
       <nav className="flex-1 px-2 py-3 space-y-2">
         {links.map((item) => {
+          if (item.perm && !can(item.perm)) return null;
+
           const Icon = item.icon;
           const active = pathname.startsWith(item.href);
 
