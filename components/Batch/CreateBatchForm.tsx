@@ -34,7 +34,11 @@ const formSchema = z.object({
   weight: z.coerce.number().positive({ message: "Weight must be > 0" }),
 });
 
-export default function CreateBatchForm() {
+interface Props {
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+export default function CreateBatchForm({ setIsOpen }: Props) {
   const createBatch = useCreateBatch();
   const { data: suppliers } = useSuppliers();
   const { data: products } = useProducts();
@@ -59,6 +63,7 @@ export default function CreateBatchForm() {
       {
         onSuccess: () => {
           form.reset();
+          setTimeout(() => setIsOpen(false), 1500);
         },
       }
     );

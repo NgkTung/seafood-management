@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Dialog,
   DialogContent,
@@ -7,10 +9,13 @@ import {
 import { Button } from "../ui/button";
 import BatchesTable from "./BatchesTable";
 import CreateBatchForm from "./CreateBatchForm";
+import { useState } from "react";
 
 export default function Batch() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <div className="p-6">
         <div className="flex justify-between">
           <h1 className="text-2xl font-semibold mb-4">Batches</h1>
@@ -21,7 +26,7 @@ export default function Batch() {
         <BatchesTable />
         <DialogContent className="max-w-sm!">
           <DialogTitle>Create new batch</DialogTitle>
-          <CreateBatchForm />
+          <CreateBatchForm setIsOpen={setIsOpen} />
         </DialogContent>
       </div>
     </Dialog>

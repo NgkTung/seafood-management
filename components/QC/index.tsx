@@ -1,0 +1,37 @@
+"use client";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "../ui/dialog";
+import ApproveBatchForm from "./ApproveBatchForm";
+
+import QCsTable from "./QCsTable";
+import { useEffect, useState } from "react";
+
+export default function QC() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedBatchId, setSelectedBatchId] = useState(null);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <div className="p-6">
+        <div className="flex justify-between">
+          <h1 className="text-2xl font-semibold mb-4">
+            Quality Control Inspections
+          </h1>
+        </div>
+        <QCsTable
+          setIsOpen={setIsOpen}
+          setSelectedBatchId={setSelectedBatchId}
+        />
+        <DialogContent className="max-w-sm!">
+          <DialogTitle>Approve Batch {selectedBatchId}</DialogTitle>
+          <ApproveBatchForm batchId={selectedBatchId!} setIsOpen={setIsOpen} />
+        </DialogContent>
+      </div>
+    </Dialog>
+  );
+}
