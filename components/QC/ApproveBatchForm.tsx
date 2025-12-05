@@ -23,17 +23,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Checkbox } from "@/components/ui/checkbox";
-
 import { useApproveBatch } from "@/hooks/qc/useApproveBatch";
 import { useProfile } from "@/hooks/auth/profile";
-
-const formSchema = z.object({
-  moisture: z.coerce.number().positive("Moisture must be > 0"),
-  temperature: z.coerce.number(),
-  grade: z.string().min(1, "Grade is required"),
-  result: z.boolean(), // checkbox
-});
 
 interface Props {
   batchId: number;
@@ -44,6 +35,13 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
   const approveBatch = useApproveBatch();
   const { data: userData } = useProfile();
 
+  const formSchema = z.object({
+    moisture: z.number().optional(),
+    temperature: z.number().optional(),
+    grade: z.string(),
+    result: z.boolean(),
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,7 +51,6 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
       result: false,
     },
   });
-
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     approveBatch.mutate(
       {

@@ -27,13 +27,6 @@ import { useCreateBatch } from "@/hooks/batches/useCreateBatch";
 import { useSuppliers } from "@/hooks/suppliers/useSuppliers";
 import { useProducts } from "@/hooks/products/useProducts";
 
-const formSchema = z.object({
-  supplierId: z.string().min(1, "Supplier is required"),
-  productId: z.string().min(1, "Product is required"),
-  dateReceived: z.string().min(1, { message: "Date received is required" }),
-  weight: z.coerce.number().positive({ message: "Weight must be > 0" }),
-});
-
 interface Props {
   setIsOpen: (isOpen: boolean) => void;
 }
@@ -43,13 +36,20 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
   const { data: suppliers } = useSuppliers();
   const { data: products } = useProducts();
 
+  const formSchema = z.object({
+    supplierId: z.string(),
+    productId: z.string(),
+    dateReceived: z.string(),
+    weight: z.coerce.number(), // This handles string-to-number conversion
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       supplierId: "",
       productId: "",
       dateReceived: "",
-      weight: undefined,
+      weight: 0, // or "" as any if you prefer empty input
     },
   });
 
