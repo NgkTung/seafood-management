@@ -1,10 +1,6 @@
-import BatchesTable from "@/components/Batch/BatchesTable";
+import Batch from "@/components/Batch";
+import { Dialog } from "@radix-ui/react-dialog";
 
 export default function Page() {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">Batches</h1>
-      <BatchesTable />
-    </div>
-  );
+  return <Batch />;
 }

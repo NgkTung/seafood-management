@@ -1,5 +1,6 @@
 import Sidebar from "@/components/layout/sidebar";
 import Topbar from "@/components/layout/topbar";
+import { Dialog } from "@radix-ui/react-dialog";
 
 export default function Layout({
   children,

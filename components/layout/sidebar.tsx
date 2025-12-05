@@ -12,6 +12,7 @@ import {
   Truck,
   Settings,
   Boxes,
+  Shrimp,
 } from "lucide-react";
 import { useProfile } from "@/hooks/auth/profile";
 
@@ -68,11 +69,14 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "h-full w-64 border-r bg-white flex flex-col",
+        "h-full w-72 border-r bg-white flex flex-col",
         mobile && "w-full"
       )}
     >
-      <div className="px-4 py-4 border-b font-semibold text-xl">Menu</div>
+      <div className="px-4 py-4 border-b font-semibold text-xl flex space-x-2">
+        <Shrimp />
+        <span>Seafood Management</span>
+      </div>
 
       <nav className="flex-1 px-2 py-3 space-y-2">
         {links.map((item) => {
