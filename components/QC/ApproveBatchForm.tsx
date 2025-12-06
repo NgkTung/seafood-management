@@ -32,26 +32,34 @@ interface Props {
 }
 
 const formSchema = z.object({
-  moisture: z.number().optional(),
-  temperature: z.number().optional(),
-  grade: z.string(),
+  moisture: z.coerce
+    .number({ required_error: "Moisture is required" })
+    .positive("Moisture must be greater than 0"),
+
+  temperature: z.coerce.number({ required_error: "Temperature is required" }),
+
+  grade: z.string().min(1, "Grade is required"),
+
   result: z.boolean(),
 });
+
+type FormValues = z.infer<typeof formSchema>;
 
 export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
   const approveBatch = useApproveBatch();
   const { data: userData } = useProfile();
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      moisture: undefined,
-      temperature: undefined,
+      moisture: 0,
+      temperature: 0,
       grade: "",
       result: false,
     },
   });
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+
+  const onSubmit = (values: FormValues) => {
     approveBatch.mutate(
       {
         Batch_ID: batchId,
@@ -75,7 +83,7 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
     <div className="max-w-md space-y-4">
       {approveBatch.error && (
         <div className="bg-red-100 text-red-700 px-3 py-2 rounded-md">
-          {approveBatch.error.message || "Failed to approve batch"}
+          {(approveBatch.error as Error).message || "Failed to approve batch"}
         </div>
       )}
 
@@ -93,9 +101,16 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
               name="moisture"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Moisture (%)</FormLabel>
+                  <FormLabel>
+                    Moisture (%)<span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input type="number" step="0.1" {...field} />
+                    <Input
+                      type="number"
+                      step="0.1"
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -107,9 +122,16 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
               name="temperature"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Temperature (°C)</FormLabel>
+                  <FormLabel>
+                    Temperature (°C)<span className="text-red-500">*</span>
+                  </FormLabel>
                   <FormControl>
-                    <Input type="number" step="0.1" {...field} />
+                    <Input
+                      type="number"
+                      step="0.1"
+                      {...field}
+                      onChange={(e) => field.onChange(e.target.value)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -123,11 +145,10 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
               name="grade"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Grade</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <FormLabel>
+                    Grade<span className="text-red-500">*</span>
+                  </FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="min-w-[140px]">
                         <SelectValue placeholder="Select grade" />
@@ -152,9 +173,7 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
               name="result"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>
-                    Approve Batch<span className="text-red-500">*</span>
-                  </FormLabel>
+                  <FormLabel>Approve Batch</FormLabel>
 
                   <FormControl>
                     <div className="flex items-center gap-2">
