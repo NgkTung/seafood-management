@@ -1,19 +1,14 @@
 "use client";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "../ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import ApproveBatchForm from "./ApproveBatchForm";
 
 import QCsTable from "./QCsTable";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function QC() {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedBatchId, setSelectedBatchId] = useState(null);
+  const [selectedBatchId, setSelectedBatchId] = useState<number | null>(null);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>

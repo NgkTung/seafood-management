@@ -1,8 +1,11 @@
 import { postData } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { CreateBatch } from "@/types/batch.type";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useCreateBatch = () => {
+  const qc = useQueryClient();
   return useMutation({
-    mutationFn: (data) => postData("/api/batch/create", data),
+    mutationFn: (data: CreateBatch) => postData("/api/batch/create", data),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["batches"] }),
   });
 };

@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Loader2 } from "lucide-react";
+import { InventoryRow } from "@/types/inventory.type";
 
 export function InventoryTable() {
   const { data, isLoading, error } = useInventory();

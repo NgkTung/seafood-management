@@ -31,16 +31,16 @@ interface Props {
   setIsOpen: (isOpen: boolean) => void;
 }
 
+const formSchema = z.object({
+  moisture: z.number().optional(),
+  temperature: z.number().optional(),
+  grade: z.string(),
+  result: z.boolean(),
+});
+
 export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
   const approveBatch = useApproveBatch();
   const { data: userData } = useProfile();
-
-  const formSchema = z.object({
-    moisture: z.number().optional(),
-    temperature: z.number().optional(),
-    grade: z.string(),
-    result: z.boolean(),
-  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

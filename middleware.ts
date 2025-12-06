@@ -1,7 +1,18 @@
-import { NextResponse } from "next/server";
-import { jwtVerify } from "jose";
+import { NextRequest, NextResponse } from "next/server";
+import { jwtVerify, JWTPayload } from "jose";
 
-const pagePermissions = {
+type PagePermissionKey =
+  | "/qc"
+  | "/batches"
+  | "/inventory"
+  | "/orders"
+  | "/reports"
+  | "/shipment"
+  | "/admin";
+
+type PermissionMap = Record<PagePermissionKey, string[]>;
+
+const pagePermissions: PermissionMap = {
   "/qc": ["qc.create"],
   "/batches": ["batch.view"],
   "/inventory": ["inventory.manage"],
@@ -13,51 +24,49 @@ const pagePermissions = {
 
 const PUBLIC_ROUTES = ["/login", "/unauthorized"];
 
-// Convert secret to Uint8Array for jose
+// Define your JWT payload shape
+interface AppJWTPayload extends JWTPayload {
+  permissions?: string[];
+}
+
 const getJwtSecret = () => {
-  const secret = process.env.JWT_SECRET;
-  return new TextEncoder().encode(secret);
+  return new TextEncoder().encode(process.env.JWT_SECRET ?? "");
 };
 
-export async function middleware(req) {
+export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   const pathname = req.nextUrl.pathname;
 
-  // ✅ If user is logged in and tries to access /login, redirect to dashboard
   if (pathname === "/login" && token) {
     try {
       await jwtVerify(token, getJwtSecret());
       return NextResponse.redirect(new URL("/dashboard", req.url));
     } catch {
-      console.log("Invalid token");
       return NextResponse.next();
     }
   }
 
-  // ✅ Allow access to public routes
   if (PUBLIC_ROUTES.includes(pathname)) {
     return NextResponse.next();
   }
 
-  // 1️⃣ Require auth for all protected routes
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // 2️⃣ Decode token
-  let decoded = null;
+  let decoded: AppJWTPayload | undefined;
+
   try {
-    const verified = await jwtVerify(token, getJwtSecret());
+    const verified = await jwtVerify<AppJWTPayload>(token, getJwtSecret());
     decoded = verified.payload;
   } catch {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  const { permissions = [] } = decoded;
+  const permissions: string[] = decoded.permissions ?? [];
 
-  // 3️⃣ Check permissions
-  const matched = Object.keys(pagePermissions).find((p) =>
-    pathname.startsWith(p)
+  const matched = (Object.keys(pagePermissions) as PagePermissionKey[]).find(
+    (p) => pathname.startsWith(p)
   );
 
   if (!matched) return NextResponse.next();
@@ -66,7 +75,7 @@ export async function middleware(req) {
 
   if (permissions.includes("*")) return NextResponse.next();
 
-  const allowed = required.every((r) => permissions.includes(r));
+  const allowed = required.every((perm) => permissions.includes(perm));
 
   if (!allowed) {
     return NextResponse.redirect(new URL("/unauthorized", req.url));

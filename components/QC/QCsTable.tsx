@@ -11,6 +11,8 @@ import {
 import { useQCs } from "@/hooks/qc/useQCs";
 import { useBatches } from "@/hooks/batches/useBatches";
 import { Button } from "../ui/button";
+import { QCInspection } from "@/types/qc.type";
+import { Batch } from "@/types/batch.type";
 
 interface Props {
   setSelectedBatchId: (id: number) => void;
@@ -46,7 +48,7 @@ export default function QCsTable({ setSelectedBatchId, setIsOpen }: Props) {
           </TableHeader>
 
           <TableBody>
-            {inspections.map((q: any) => (
+            {inspections.map((q: QCInspection) => (
               <TableRow key={q.QC_ID}>
                 <TableCell>{q.QC_ID}</TableCell>
                 <TableCell>{q.Batch_ID}</TableCell>
@@ -88,7 +90,7 @@ export default function QCsTable({ setSelectedBatchId, setIsOpen }: Props) {
           </TableHeader>
 
           <TableBody>
-            {pendingBatches.map((b: any) => (
+            {pendingBatches.map((b: Batch) => (
               <TableRow key={b.Batch_ID}>
                 <TableCell>{b.Batch_ID}</TableCell>
                 <TableCell>{b.Supplier_Name}</TableCell>

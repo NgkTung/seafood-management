@@ -26,47 +26,56 @@ import {
 import { useCreateBatch } from "@/hooks/batches/useCreateBatch";
 import { useSuppliers } from "@/hooks/suppliers/useSuppliers";
 import { useProducts } from "@/hooks/products/useProducts";
+import { Supplier } from "@/types/supplier.type";
+import { Product } from "@/types/product.type";
 
 interface Props {
   setIsOpen: (isOpen: boolean) => void;
 }
+
+const formSchema = z.object({
+  supplierId: z.string().min(1, "Supplier is required"),
+  productId: z.string().min(1, "Product is required"),
+  dateReceived: z.string().min(1, "Date received is required"),
+  weight: z
+    .string()
+    .min(1, "Weight is required")
+    .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
+      message: "Weight must be a number greater than 0",
+    }),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 export default function CreateBatchForm({ setIsOpen }: Props) {
   const createBatch = useCreateBatch();
   const { data: suppliers } = useSuppliers();
   const { data: products } = useProducts();
 
-  const formSchema = z.object({
-    supplierId: z.string(),
-    productId: z.string(),
-    dateReceived: z.string(),
-    weight: z.coerce.number(), // This handles string-to-number conversion
-  });
-
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       supplierId: "",
       productId: "",
       dateReceived: "",
-      weight: 0, // or "" as any if you prefer empty input
+      weight: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    createBatch.mutate(
-      {
-        ...values,
-        supplierId: Number(values.supplierId),
-        productId: Number(values.productId),
+  const onSubmit = (values: FormValues) => {
+    const payload = {
+      Supplier_ID: Number(values.supplierId),
+      Product_ID: Number(values.productId),
+      Date_Received: values.dateReceived,
+      Weight: Number(values.weight),
+    };
+
+    createBatch.mutate(payload, {
+      onSuccess: () => {
+        form.reset();
+        setTimeout(() => setIsOpen(false), 1500);
       },
-      {
-        onSuccess: () => {
-          form.reset();
-          setTimeout(() => setIsOpen(false), 1500);
-        },
-      }
-    );
+    });
   };
 
   return (
@@ -83,11 +92,11 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
         </div>
       )}
 
-      <Form {...form}>
+      <Form<FormValues> {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           {/* Row 1: Supplier + Product */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Supplier Select */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {/* Supplier */}
             <FormField
               control={form.control}
               name="supplierId"
@@ -96,7 +105,6 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                   <FormLabel>
                     Supplier<span className="text-red-500">*</span>
                   </FormLabel>
-
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -107,7 +115,7 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {suppliers?.suppliers?.map((s) => (
+                      {suppliers?.suppliers?.map((s: Supplier) => (
                         <SelectItem
                           key={s.Supplier_ID}
                           value={String(s.Supplier_ID)}
@@ -117,13 +125,12 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                       ))}
                     </SelectContent>
                   </Select>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Product Select */}
+            {/* Product */}
             <FormField
               control={form.control}
               name="productId"
@@ -132,7 +139,6 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                   <FormLabel>
                     Product<span className="text-red-500">*</span>
                   </FormLabel>
-
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
@@ -143,7 +149,7 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {products?.products?.map((p) => (
+                      {products?.products?.map((p: Product) => (
                         <SelectItem
                           key={p.Product_ID}
                           value={String(p.Product_ID)}
@@ -153,15 +159,14 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                       ))}
                     </SelectContent>
                   </Select>
-
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
 
-          {/* Row 2: Date Received + Weight */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Row 2: Date + Weight */}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {/* Date Received */}
             <FormField
               control={form.control}

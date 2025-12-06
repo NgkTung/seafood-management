@@ -1,35 +1,40 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { RowDataPacket, ResultSetHeader } from "mysql2";
+import { CreateBatch } from "@/types/batch.type";
 
-// CREATE NEW BATCH
+// Define supplier row structure
+interface SupplierRow extends RowDataPacket {
+  Supplier_ID: number;
+  Status: string;
+}
+
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { supplierId, productId, dateReceived, weight } = body;
+    const body: CreateBatch = await req.json();
+    const { Supplier_ID, Product_ID, Date_Received, Weight } = body;
 
-    // Business rule: weight > 0
-    if (!weight || weight <= 0) {
+    if (!Weight || Weight <= 0) {
       return NextResponse.json(
         { error: "Weight must be greater than zero." },
         { status: 400 }
       );
     }
 
-    // Business rule: batch must have date received
-    if (!dateReceived) {
+    if (!Date_Received) {
       return NextResponse.json(
         { error: "Date received is required." },
         { status: 400 }
       );
     }
 
-    // Business rule: supplier must be active
-    const [supplierRows]: any = await db.execute(
+    // ---------- CHECK SUPPLIER ----------
+    const [supplierRows] = await db.execute<SupplierRow[]>(
       "SELECT Supplier_ID, Status FROM supplier WHERE Supplier_ID = ?",
-      [supplierId]
+      [Supplier_ID]
     );
 
-    if (!supplierRows.length) {
+    if (supplierRows.length === 0) {
       return NextResponse.json(
         { error: "Supplier not found." },
         { status: 404 }
@@ -43,22 +48,22 @@ export async function POST(req: Request) {
       );
     }
 
-    // Create batch
-    const [result]: any = await db.execute(
+    // ---------- INSERT NEW BATCH ----------
+    const [result] = await db.execute<ResultSetHeader>(
       `
-      INSERT INTO batch
-        (Supplier_ID, Product_ID, Date_Received, Weight, Status)
-      VALUES (?, ?, ?, ?, ?)
+        INSERT INTO batch
+          (Supplier_ID, Product_ID, Date_Received, Weight, Status)
+        VALUES (?, ?, ?, ?, ?)
       `,
-      [supplierId, productId, dateReceived, weight, "Pending"]
+      [Supplier_ID, Product_ID, Date_Received, Weight, "Pending"]
     );
 
     return NextResponse.json({
       success: true,
-      batchId: result.insertId,
+      Batch_ID: result.insertId,
     });
-  } catch (err: any) {
-    console.error("ERROR CREATING BATCH: ", err);
+  } catch (error) {
+    console.error("ERROR CREATING BATCH:", error);
     return NextResponse.json(
       { error: "Server error while creating batch" },
       { status: 500 }

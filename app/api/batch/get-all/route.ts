@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import type { Batch } from "@/types/batch.type";
 
 export async function GET(req: Request) {
   try {
@@ -21,7 +22,7 @@ export async function GET(req: Request) {
       INNER JOIN product p ON b.Product_ID = p.Product_ID
     `;
 
-    const params: any[] = [];
+    const params: string[] = [];
 
     if (status) {
       query += ` WHERE b.Status = ?`;
@@ -30,10 +31,10 @@ export async function GET(req: Request) {
 
     query += ` ORDER BY b.Batch_ID ASC`;
 
-    const [rows]: any = await db.execute(query, params);
+    const [rows] = await db.execute<Batch[]>(query, params);
 
     return NextResponse.json({ batches: rows });
-  } catch (err: any) {
+  } catch (err) {
     console.error("ERROR FETCHING BATCHES: ", err);
     return NextResponse.json(
       { error: "Failed to load batches" },

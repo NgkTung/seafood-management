@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import type { QCInspection } from "@/types/qc.type";
 
 export async function GET() {
   try {
@@ -19,11 +20,12 @@ export async function GET() {
       ORDER BY q.QC_ID ASC
     `;
 
-    const [rows]: any = await db.execute(query);
+    const [rows] = await db.execute<QCInspection[]>(query);
 
     return NextResponse.json({ inspections: rows });
-  } catch (err: any) {
+  } catch (err) {
     console.error("ERROR FETCHING QC INSPECTIONS: ", err);
+
     return NextResponse.json(
       { error: "Failed to load QC inspections" },
       { status: 500 }
