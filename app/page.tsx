@@ -1,5 +1,6 @@
 "use client";
 
+import { Shrimp } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -12,7 +13,9 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <h1>Seafood Management</h1>
+      <h1 className="text-4xl">
+        <Shrimp /> <span>Seafood Management</span>
+      </h1>
     </div>
   );
 }

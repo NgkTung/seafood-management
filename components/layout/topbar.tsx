@@ -7,10 +7,12 @@ import Sidebar from "./sidebar";
 import { useLogout } from "@/hooks/auth/logout";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useProfile } from "@/hooks/auth/profile";
 
 export default function Topbar() {
   const logoutMutation = useLogout();
   const router = useRouter();
+  const { data: userData } = useProfile();
 
   useEffect(() => {
     if (logoutMutation.isSuccess) {
@@ -38,7 +40,9 @@ export default function Topbar() {
 
       <div className="ml-auto flex items-center gap-3">
         {/* Right section */}
-        <div className="text-sm text-gray-600">Hello, User</div>
+        <div className="text-sm text-gray-600">
+          Hello, {userData?.user.fullName}
+        </div>
         <button
           className="text-sm text-gray-50 bg-red-600 py-1 px-2 rounded-md cursor-pointer hover:bg-red-700 transition"
           onClick={() => logoutMutation.mutate()}

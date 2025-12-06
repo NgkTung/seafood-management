@@ -13,6 +13,7 @@ import {
   Settings,
   Boxes,
   Shrimp,
+  MapPinHouse,
 } from "lucide-react";
 import { useProfile } from "@/hooks/auth/profile";
 
@@ -43,6 +44,12 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
       href: "/inventory",
       label: "Inventory",
       icon: Package,
+      perm: "inventory.manage",
+    },
+    {
+      href: "/storage-locations",
+      label: "Storage Locations",
+      icon: MapPinHouse,
       perm: "inventory.manage",
     },
     {
