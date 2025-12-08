@@ -10,7 +10,6 @@ import {
   ClipboardList,
   BarChart2,
   Truck,
-  Settings,
   Boxes,
   Shrimp,
   MapPinHouse,
@@ -70,7 +69,6 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
       icon: Truck,
       perm: "shipment.manage",
     },
-    { href: "/admin", label: "Admin", icon: Settings, perm: "*" },
   ];
 
   return (

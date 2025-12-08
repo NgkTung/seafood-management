@@ -14,10 +14,7 @@ import { StorageLocationRow } from "@/types/storage-location.type";
 export default function StorageLocationsTable() {
   const { data, isLoading, isError } = useStorageLocations();
 
-  if (isLoading)
-    return (
-      <div className="p-4 text-center text-gray-500">Loading locations...</div>
-    );
+  if (isLoading) return <div className="p-4">Loading...</div>;
 
   if (isError)
     return (

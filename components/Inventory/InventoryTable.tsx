@@ -40,11 +40,7 @@ export default function InventoryTable({
   } = useBatches({ status: "Approved" });
 
   if (inventoryLoading || batchLoading)
-    return (
-      <div className="w-full flex justify-center py-10">
-        <Loader2 className="animate-spin w-6 h-6 text-gray-500" />
-      </div>
-    );
+    return <div className="p-4">Loading...</div>;
 
   if (inventoryError || batchError)
     return (

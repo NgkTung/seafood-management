@@ -25,7 +25,7 @@ export default function ExportOrdersTable() {
         <TableHeader>
           <TableRow>
             <TableHead>Order ID</TableHead>
-            <TableHead>Customer ID</TableHead>
+            <TableHead>Customer</TableHead>
             <TableHead>Order Date</TableHead>
             <TableHead>Shipping Date</TableHead>
             <TableHead>Status</TableHead>
@@ -36,7 +36,7 @@ export default function ExportOrdersTable() {
           {orders.map((o: ExportOrderRow) => (
             <TableRow key={o.Order_ID}>
               <TableCell>{o.Order_ID}</TableCell>
-              <TableCell>{o.Customer_ID}</TableCell>
+              <TableCell>{o.Customer_Name}</TableCell>
               <TableCell>
                 {new Date(o.Order_Date).toLocaleDateString("vi-VN")}
               </TableCell>

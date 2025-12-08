@@ -7,13 +7,15 @@ export async function GET() {
     const [rows] = await db.execute<ExportOrderRow[]>(
       `
         SELECT 
-          Order_ID,
-          Customer_ID,
-          Order_Date,
-          Shipping_Date,
-          Status
-        FROM export_order
-        ORDER BY Order_ID ASC
+          eo.Order_ID,
+          eo.Customer_ID,
+          c.Customer_Name,
+          eo.Order_Date,
+          eo.Shipping_Date,
+          eo.Status
+        FROM export_order eo
+        JOIN customer c ON eo.Customer_ID = c.Customer_ID
+        ORDER BY eo.Order_ID ASC
       `
     );
 
