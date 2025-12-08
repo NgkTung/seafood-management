@@ -25,14 +25,12 @@ export default function InventoryTable({
   setIsOpen,
   setSelectedBatchId,
 }: Props) {
-  // Inventory hook
   const {
     data: inventoryData,
     isLoading: inventoryLoading,
     error: inventoryError,
   } = useInventory();
 
-  // Approved batches hook
   const {
     data: approvedBatchData,
     isLoading: batchLoading,
@@ -40,22 +38,20 @@ export default function InventoryTable({
   } = useBatches({ status: "Approved" });
 
   if (inventoryLoading || batchLoading)
-    return <div className="p-4">Loading...</div>;
+    return <div className="p-4">Đang tải...</div>;
 
   if (inventoryError || batchError)
     return (
       <p className="text-red-500 text-sm">
-        Failed to load inventory or batches.
+        Không thể tải dữ liệu tồn kho hoặc lô hàng.
       </p>
     );
 
   const inventories = inventoryData?.inventory ?? [];
   const approvedBatches = approvedBatchData?.batches ?? [];
 
-  // Create a fast lookup for batch IDs that already exist in inventory
   const inventoryBatchIds = new Set(inventories.map((inv) => inv.Batch_ID));
 
-  // Filter approved batches to only show ones NOT in inventory
   const filteredApprovedBatches = approvedBatches.filter(
     (b: Batch) => !inventoryBatchIds.has(b.Batch_ID)
   );
@@ -67,9 +63,9 @@ export default function InventoryTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Batch ID</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Location</TableHead>
+              <TableHead>Mã lô</TableHead>
+              <TableHead>Số lượng</TableHead>
+              <TableHead>Vị trí</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -78,7 +74,7 @@ export default function InventoryTable({
               <TableRow key={row.Batch_ID}>
                 <TableCell>{row.Batch_ID}</TableCell>
                 <TableCell>{row.Available_Quantity}</TableCell>
-                <TableCell>{row.Location_Name ?? "N/A"}</TableCell>
+                <TableCell>{row.Location_Name ?? "Không có"}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -86,16 +82,16 @@ export default function InventoryTable({
       </div>
 
       {/* ================= APPROVED BATCHES TABLE ================= */}
-      <div className="text-lg font-semibold">Approved Batches</div>
+      <div className="text-lg font-semibold">Các lô đã duyệt</div>
       <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Batch ID</TableHead>
-              <TableHead>Supplier</TableHead>
-              <TableHead>Product</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Date Received</TableHead>
+              <TableHead>Mã lô</TableHead>
+              <TableHead>Nhà cung cấp</TableHead>
+              <TableHead>Sản phẩm</TableHead>
+              <TableHead>Trạng thái</TableHead>
+              <TableHead>Ngày nhận</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -119,7 +115,7 @@ export default function InventoryTable({
                       setSelectedBatchId(b.Batch_ID);
                     }}
                   >
-                    Add to Storage
+                    Thêm vào kho
                   </Button>
                 </TableCell>
               </TableRow>

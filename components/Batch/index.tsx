@@ -18,14 +18,14 @@ export default function Batch() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <div className="p-6">
         <div className="flex justify-between">
-          <h1 className="text-2xl font-semibold mb-4">Batches</h1>
+          <h1 className="text-2xl font-semibold mb-4">Lô hàng</h1>
           <DialogTrigger asChild>
-            <Button>Create new batch</Button>
+            <Button>Tạo lô hàng mới</Button>
           </DialogTrigger>
         </div>
         <BatchesTable />
         <DialogContent className="max-w-sm!">
-          <DialogTitle>Create new batch</DialogTitle>
+          <DialogTitle>Tạo lô hàng mới</DialogTitle>
           <CreateBatchForm setIsOpen={setIsOpen} />
         </DialogContent>
       </div>

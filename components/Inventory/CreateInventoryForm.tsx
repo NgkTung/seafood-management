@@ -25,7 +25,6 @@ import {
 
 import { useCreateInventory } from "@/hooks/inventory/useCreateInventory";
 import { useStorageLocations } from "@/hooks/storage-locations/useStorageLocations";
-import { StorageLocationRow } from "@/types/storage-location.type";
 
 interface Props {
   batchId: number;
@@ -33,12 +32,12 @@ interface Props {
 }
 
 const formSchema = z.object({
-  locationId: z.string().min(1, "Location is required"),
+  locationId: z.string().min(1, "Vị trí lưu kho là bắt buộc"),
   availableQty: z
     .string()
-    .min(1, "Quantity is required")
+    .min(1, "Số lượng là bắt buộc")
     .refine((v) => !isNaN(Number(v)) && Number(v) >= 0, {
-      message: "Quantity must be 0 or greater",
+      message: "Số lượng phải từ 0 trở lên",
     }),
 });
 
@@ -75,28 +74,26 @@ export default function CreateInventoryForm({ setIsOpen, batchId }: Props) {
     <div className="max-w-md space-y-4">
       {createInventory.error && (
         <div className="bg-red-100 text-red-700 px-3 py-2 rounded-md">
-          {createInventory.error.message || "Failed to create inventory"}
+          {createInventory.error.message || "Tạo tồn kho thất bại"}
         </div>
       )}
 
       {createInventory.isSuccess && (
         <div className="bg-green-100 text-green-700 px-3 py-2 rounded-md">
-          Inventory created successfully!
+          Tạo tồn kho thành công!
         </div>
       )}
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* Row: Location + Quantity */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Location */}
             <FormField
               control={form.control}
               name="locationId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Location<span className="text-red-500">*</span>
+                    Vị trí lưu kho<span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -104,7 +101,7 @@ export default function CreateInventoryForm({ setIsOpen, batchId }: Props) {
                   >
                     <FormControl>
                       <SelectTrigger className="w-full h-10 px-3">
-                        <SelectValue placeholder="Select location" />
+                        <SelectValue placeholder="Chọn vị trí" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -129,7 +126,7 @@ export default function CreateInventoryForm({ setIsOpen, batchId }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Available Quantity<span className="text-red-500">*</span>
+                    Số lượng khả dụng<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -151,7 +148,7 @@ export default function CreateInventoryForm({ setIsOpen, batchId }: Props) {
             type="submit"
             className="w-full"
           >
-            {createInventory.isPending ? "Creating..." : "Create Inventory"}
+            {createInventory.isPending ? "Đang tạo..." : "Tạo tồn kho"}
           </Button>
         </form>
       </Form>

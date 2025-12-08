@@ -34,14 +34,14 @@ interface Props {
 }
 
 const formSchema = z.object({
-  supplierId: z.string().min(1, "Supplier is required"),
-  productId: z.string().min(1, "Product is required"),
-  dateReceived: z.string().min(1, "Date received is required"),
+  supplierId: z.string().min(1, "Vui lòng chọn nhà cung cấp"),
+  productId: z.string().min(1, "Vui lòng chọn sản phẩm"),
+  dateReceived: z.string().min(1, "Ngày nhận là bắt buộc"),
   weight: z
     .string()
-    .min(1, "Weight is required")
+    .min(1, "Khối lượng là bắt buộc")
     .refine((val) => !isNaN(Number(val)) && Number(val) > 0, {
-      message: "Weight must be a number greater than 0",
+      message: "Khối lượng phải là số lớn hơn 0",
     }),
 });
 
@@ -82,28 +82,26 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
     <div className="max-w-md space-y-4">
       {createBatch.error && (
         <div className="bg-red-100 text-red-700 px-3 py-2 rounded-md">
-          {createBatch.error.message || "Failed to create batch"}
+          {createBatch.error.message || "Tạo lô thất bại"}
         </div>
       )}
 
       {createBatch.isSuccess && (
         <div className="bg-green-100 text-green-700 px-3 py-2 rounded-md">
-          Batch created successfully!
+          Tạo lô thành công!
         </div>
       )}
 
       <Form<FormValues> {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          {/* Row 1: Supplier + Product */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Supplier */}
             <FormField
               control={form.control}
               name="supplierId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Supplier<span className="text-red-500">*</span>
+                    Nhà cung cấp<span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -111,7 +109,7 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select supplier" />
+                        <SelectValue placeholder="Chọn nhà cung cấp" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -130,14 +128,13 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
               )}
             />
 
-            {/* Product */}
             <FormField
               control={form.control}
               name="productId"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Product<span className="text-red-500">*</span>
+                    Sản phẩm<span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -145,7 +142,7 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
                   >
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select product" />
+                        <SelectValue placeholder="Chọn sản phẩm" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -165,16 +162,14 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
             />
           </div>
 
-          {/* Row 2: Date + Weight */}
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-            {/* Date Received */}
             <FormField
               control={form.control}
               name="dateReceived"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Date Received<span className="text-red-500">*</span>
+                    Ngày nhận<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
@@ -184,14 +179,13 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
               )}
             />
 
-            {/* Weight */}
             <FormField
               control={form.control}
               name="weight"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Weight (kg)<span className="text-red-500">*</span>
+                    Khối lượng (kg)<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -212,7 +206,7 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
             type="submit"
             className="w-full"
           >
-            {createBatch.isPending ? "Creating..." : "Create Batch"}
+            {createBatch.isPending ? "Đang tạo..." : "Tạo mói"}
           </Button>
         </form>
       </Form>

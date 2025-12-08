@@ -15,7 +15,7 @@ import { ExportOrderRow } from "@/types/export-order.type";
 export default function ExportOrdersTable() {
   const { data, isLoading } = useExportOrders();
 
-  if (isLoading) return <div className="p-4">Loading...</div>;
+  if (isLoading) return <div className="p-4">Đang tải...</div>;
 
   const orders = data?.orders || [];
 
@@ -24,11 +24,11 @@ export default function ExportOrdersTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Order ID</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead>Order Date</TableHead>
-            <TableHead>Shipping Date</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>Mã đơn hàng</TableHead>
+            <TableHead>Khách hàng</TableHead>
+            <TableHead>Ngày đặt hàng</TableHead>
+            <TableHead>Ngày giao hàng</TableHead>
+            <TableHead>Trạng thái</TableHead>
           </TableRow>
         </TableHeader>
 

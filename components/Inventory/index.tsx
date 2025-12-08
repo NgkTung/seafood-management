@@ -13,14 +13,16 @@ export default function Inventory() {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <div className="p-6">
         <div className="flex justify-between">
-          <h1 className="text-2xl font-semibold mb-4">Inventory</h1>
+          <h1 className="text-2xl font-semibold mb-4">Tồn kho</h1>
         </div>
         <InventoryTable
           setIsOpen={setIsOpen}
           setSelectedBatchId={setSelectedBatchId}
         />
         <DialogContent className="max-w-sm!">
-          <DialogTitle>Add batch to inventory (#{selectedBatchId})</DialogTitle>
+          <DialogTitle>
+            Thêm lô hàng vào tồn kho (#{selectedBatchId})
+          </DialogTitle>
           <CreateInventoryForm
             batchId={selectedBatchId!}
             setIsOpen={setIsOpen}

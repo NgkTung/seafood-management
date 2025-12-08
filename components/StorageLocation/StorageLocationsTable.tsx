@@ -19,7 +19,7 @@ export default function StorageLocationsTable() {
   if (isError)
     return (
       <div className="p-4 text-center text-red-500">
-        Failed to load locations
+        Lỗi khi tải thông tin vị trí kho.
       </div>
     );
 
@@ -30,9 +30,9 @@ export default function StorageLocationsTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Location ID</TableHead>
-            <TableHead>Location Name</TableHead>
-            <TableHead>Capacity (kg)</TableHead>
+            <TableHead>ID</TableHead>
+            <TableHead>Tên vị trí</TableHead>
+            <TableHead>Sức chứa (kg)</TableHead>
           </TableRow>
         </TableHeader>
 

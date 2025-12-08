@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Seafood Control Panel",
-  description: "Manage your seafood inventory with ease",
+  title: "Trang quản lí hải sản",
+  description: "Quản lí kho hàng hải sản của bạn dễ dàng",
 };
 
 export default function RootLayout({

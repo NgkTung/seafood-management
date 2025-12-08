@@ -36,14 +36,14 @@ export default function QCsTable({ setSelectedBatchId, setIsOpen }: Props) {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>QC ID</TableHead>
-              <TableHead>Batch ID</TableHead>
-              <TableHead>Inspector</TableHead>
-              <TableHead>Moisture %</TableHead>
-              <TableHead>Temperature (°C)</TableHead>
-              <TableHead>Grade</TableHead>
-              <TableHead>Result</TableHead>
-              <TableHead>Inspection Date</TableHead>
+              <TableHead>ID</TableHead>
+              <TableHead>ID Lô hàng</TableHead>
+              <TableHead>Người kiểm soát</TableHead>
+              <TableHead>Độ ẩm %</TableHead>
+              <TableHead>Nhiệt độ (°C)</TableHead>
+              <TableHead>Đánh giá</TableHead>
+              <TableHead>kết quả</TableHead>
+              <TableHead>Ngày kiểm soát</TableHead>
             </TableRow>
           </TableHeader>
 
@@ -64,7 +64,7 @@ export default function QCsTable({ setSelectedBatchId, setIsOpen }: Props) {
                         : "text-red-600 font-medium"
                     }
                   >
-                    {q.Result}
+                    {q.Result === "Pass" ? "Đạt" : "Không đạt"}
                   </span>
                 </TableCell>
                 <TableCell>{q.Inspection_Date}</TableCell>
@@ -74,17 +74,17 @@ export default function QCsTable({ setSelectedBatchId, setIsOpen }: Props) {
         </Table>
       </div>
 
-      <div className="text-lg font-semibold">Pending Batches</div>
+      <div className="text-lg font-semibold">Lô hàng đang chờ xác nhận</div>
 
       <div className="w-full rounded-md border bg-white shadow-sm">
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Batch ID</TableHead>
-              <TableHead>Supplier</TableHead>
-              <TableHead>Product</TableHead>
-              <TableHead>Date Received</TableHead>
-              <TableHead>Weight (kg)</TableHead>
+              <TableHead>ID</TableHead>
+              <TableHead>Nhà cung cấp</TableHead>
+              <TableHead>Sản phẩm</TableHead>
+              <TableHead>Ngày nhận</TableHead>
+              <TableHead>Cân nặng (kg)</TableHead>
               <TableHead></TableHead>
             </TableRow>
           </TableHeader>
@@ -105,7 +105,7 @@ export default function QCsTable({ setSelectedBatchId, setIsOpen }: Props) {
                       setIsOpen(true);
                     }}
                   >
-                    Inspect
+                    Kiểm soát
                   </Button>
                 </TableCell>
               </TableRow>

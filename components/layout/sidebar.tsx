@@ -31,41 +31,41 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
   };
 
   const links = [
-    { href: "/dashboard", label: "Dashboard", icon: Home, perm: "" },
-    { href: "/batches", label: "Batches", icon: Boxes, perm: "batch.view" },
+    { href: "/dashboard", label: "Trang điều khiển", icon: Home, perm: "" },
+    { href: "/batches", label: "Lô hàng", icon: Boxes, perm: "batch.view" },
     {
       href: "/qc",
-      label: "Quality Control",
+      label: "Kiểm soát chất lượng",
       icon: ClipboardList,
       perm: "qc.create",
     },
     {
       href: "/inventory",
-      label: "Inventory",
+      label: "Tồn kho",
       icon: Package,
       perm: "inventory.manage",
     },
     {
       href: "/storage-locations",
-      label: "Storage Locations",
+      label: "Vị trí kho",
       icon: MapPinHouse,
       perm: "inventory.manage",
     },
     {
       href: "/export-orders",
-      label: "Export Orders",
+      label: "Đơn xuất khẩu",
       icon: SquareKanban,
       perm: "order.create",
     },
     {
       href: "/reports",
-      label: "Reports",
+      label: "Báo cáo",
       icon: BarChart2,
       perm: "reports.view",
     },
     {
-      href: "/shipment",
-      label: "Shipment",
+      href: "/shipments",
+      label: "Vận chuyển",
       icon: Truck,
       perm: "shipment.manage",
     },
