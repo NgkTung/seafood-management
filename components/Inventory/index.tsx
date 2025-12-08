@@ -1,11 +1,13 @@
 "use client";
 
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
-import { InventoryTable } from "./InventoryTable";
+import CreateInventoryForm from "./CreateInventoryForm";
+import InventoryTable from "./InventoryTable";
 import { useState } from "react";
 
 export default function Inventory() {
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedBatchId, setSelectedBatchId] = useState<number | null>(null);
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -13,9 +15,16 @@ export default function Inventory() {
         <div className="flex justify-between">
           <h1 className="text-2xl font-semibold mb-4">Inventory</h1>
         </div>
-        <InventoryTable />
+        <InventoryTable
+          setIsOpen={setIsOpen}
+          setSelectedBatchId={setSelectedBatchId}
+        />
         <DialogContent className="max-w-sm!">
-          <DialogTitle>Approve batch</DialogTitle>
+          <DialogTitle>Add batch to inventory (#{selectedBatchId})</DialogTitle>
+          <CreateInventoryForm
+            batchId={selectedBatchId!}
+            setIsOpen={setIsOpen}
+          />
         </DialogContent>
       </div>
     </Dialog>

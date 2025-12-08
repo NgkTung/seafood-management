@@ -28,7 +28,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // ---------- CHECK SUPPLIER ----------
     const [supplierRows] = await db.execute<SupplierRow[]>(
       "SELECT Supplier_ID, Status FROM supplier WHERE Supplier_ID = ?",
       [Supplier_ID]

@@ -12,3 +12,9 @@ export interface InventoryRow extends RowDataPacket {
   Date_Received: string;
   Batch_Status: string;
 }
+
+export interface CreateInventory {
+  Batch_ID: number;
+  Available_Quantity: number;
+  Location_ID: number;
+}

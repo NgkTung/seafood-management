@@ -30,8 +30,6 @@ export default function StorageLocationsTable() {
 
   return (
     <div className="rounded-md border bg-white p-4 shadow-sm">
-      <h2 className="mb-4 text-xl font-semibold">Storage Locations</h2>
-
       <Table>
         <TableHeader>
           <TableRow>

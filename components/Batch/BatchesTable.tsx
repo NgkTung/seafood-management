@@ -9,6 +9,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useBatches } from "@/hooks/batches/useBatches";
+import { Batch } from "@/types/batch.type";
 
 export default function BatchesTable() {
   const { data, isLoading } = useBatches();
@@ -32,7 +33,7 @@ export default function BatchesTable() {
         </TableHeader>
 
         <TableBody>
-          {batches.map((b: any) => (
+          {batches.map((b: Batch) => (
             <TableRow key={b.Batch_ID}>
               <TableCell>{b.Batch_ID}</TableCell>
               <TableCell>{b.Supplier_Name}</TableCell>
