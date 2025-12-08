@@ -53,7 +53,11 @@ export default function ExportOrdersTable() {
                       : "text-yellow-600 font-medium"
                   }
                 >
-                  {o.Status}
+                  {o.Status === "Approved"
+                    ? "Đã xác nhận"
+                    : o.Status === "Shipped"
+                    ? "Đã giao hàng"
+                    : "Bản nháp"}
                 </span>
               </TableCell>
             </TableRow>

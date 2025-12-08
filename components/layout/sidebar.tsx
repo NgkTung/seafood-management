@@ -58,12 +58,6 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
       perm: "order.create",
     },
     {
-      href: "/reports",
-      label: "Báo cáo",
-      icon: BarChart2,
-      perm: "reports.view",
-    },
-    {
       href: "/shipments",
       label: "Vận chuyển",
       icon: Truck,
