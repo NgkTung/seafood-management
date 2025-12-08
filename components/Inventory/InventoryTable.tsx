@@ -67,7 +67,7 @@ export default function InventoryTable({
   return (
     <div className="space-y-6">
       {/* ================= INVENTORY TABLE ================= */}
-      <div className="rounded-md border bg-white p-4">
+      <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
             <TableRow>
@@ -91,7 +91,7 @@ export default function InventoryTable({
 
       {/* ================= APPROVED BATCHES TABLE ================= */}
       <div className="text-lg font-semibold">Approved Batches</div>
-      <div className="rounded-md border bg-white p-4">
+      <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
             <TableRow>

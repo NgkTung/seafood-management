@@ -29,7 +29,7 @@ export default function StorageLocationsTable() {
   const locations = data.locations;
 
   return (
-    <div className="rounded-md border bg-white p-4 shadow-sm">
+    <div className="rounded-md border bg-white shadow-sm">
       <Table>
         <TableHeader>
           <TableRow>

@@ -53,8 +53,8 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
       perm: "inventory.manage",
     },
     {
-      href: "/orders",
-      label: "Orders",
+      href: "/export-orders",
+      label: "Export Orders",
       icon: SquareKanban,
       perm: "order.create",
     },
