@@ -33,12 +33,12 @@ interface Props {
 
 const formSchema = z.object({
   moisture: z.coerce
-    .number({ required_error: "Moisture is required" })
-    .positive("Moisture must be greater than 0"),
+    .number({ required_error: "Độ ẩm là bắt buộc" })
+    .positive("Độ ẩm phải lớn hơn 0"),
 
-  temperature: z.coerce.number({ required_error: "Temperature is required" }),
+  temperature: z.coerce.number({ required_error: "Nhiệt độ là bắt buộc" }),
 
-  grade: z.string().min(1, "Grade is required"),
+  grade: z.string().min(1, "Hạng phân loại là bắt buộc"),
 
   result: z.boolean(),
 });
@@ -83,13 +83,13 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
     <div className="max-w-md space-y-4">
       {approveBatch.error && (
         <div className="bg-red-100 text-red-700 px-3 py-2 rounded-md">
-          {(approveBatch.error as Error).message || "Failed to approve batch"}
+          {(approveBatch.error as Error).message || "Duyệt lô thất bại"}
         </div>
       )}
 
       {approveBatch.isSuccess && (
         <div className="bg-green-100 text-green-700 px-3 py-2 rounded-md">
-          Batch QC submitted successfully!
+          Gửi QC thành công!
         </div>
       )}
 
@@ -102,7 +102,7 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Moisture (%)<span className="text-red-500">*</span>
+                    Độ ẩm (%)<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -123,7 +123,7 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Temperature (°C)<span className="text-red-500">*</span>
+                    Nhiệt độ (°C)<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -146,12 +146,12 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Grade<span className="text-red-500">*</span>
+                    Hạng phân loại<span className="text-red-500">*</span>
                   </FormLabel>
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="min-w-[140px]">
-                        <SelectValue placeholder="Select grade" />
+                        <SelectValue placeholder="Chọn hạng" />
                       </SelectTrigger>
                     </FormControl>
 
@@ -168,12 +168,13 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="result"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Approve Batch</FormLabel>
+                  <FormLabel>Duyệt lô</FormLabel>
 
                   <FormControl>
                     <div className="flex items-center gap-2">
@@ -184,7 +185,7 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
                         onChange={(e) => field.onChange(e.target.checked)}
                       />
                       <span className="text-sm text-muted-foreground">
-                        Mark as Approved
+                        Đánh dấu là Đạt
                       </span>
                     </div>
                   </FormControl>
@@ -200,7 +201,7 @@ export default function ApproveBatchForm({ batchId, setIsOpen }: Props) {
             type="submit"
             className="w-full"
           >
-            {approveBatch.isPending ? "Submitting..." : "Submit QC"}
+            {approveBatch.isPending ? "Đang gửi..." : "Gửi QC"}
           </Button>
         </form>
       </Form>

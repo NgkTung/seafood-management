@@ -23,12 +23,12 @@ export default function BatchesTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Batch ID</TableHead>
-            <TableHead>Supplier</TableHead>
-            <TableHead>Product</TableHead>
-            <TableHead>Date Received</TableHead>
-            <TableHead>Weight (kg)</TableHead>
-            <TableHead>Status</TableHead>
+            <TableHead>ID</TableHead>
+            <TableHead>Nhà cung cấp</TableHead>
+            <TableHead>Mặt hàng</TableHead>
+            <TableHead>Ngày nhận</TableHead>
+            <TableHead>Cân nặng (kg)</TableHead>
+            <TableHead>Trạng thái</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -50,7 +50,11 @@ export default function BatchesTable() {
                       : "text-yellow-600 font-medium"
                   }
                 >
-                  {b.Status}
+                  {b.Status === "Approved"
+                    ? "Đã xác nhận"
+                    : b.Status === "Rejected"
+                    ? "Từ chối"
+                    : "Đang chờ"}
                 </span>
               </TableCell>
             </TableRow>

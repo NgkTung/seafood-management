@@ -35,19 +35,19 @@ export default function Topbar() {
           </SheetContent>
         </Sheet>
 
-        <h1 className="font-semibold text-lg">Seafood Control Panel</h1>
+        <h1 className="font-semibold text-lg"></h1>
       </div>
 
       <div className="ml-auto flex items-center gap-3">
         {/* Right section */}
         <div className="text-sm text-gray-600">
-          Hello, {userData?.user.fullName}
+          Xin chào, {userData?.user.fullName}
         </div>
         <button
           className="text-sm text-gray-50 bg-red-600 py-1 px-2 rounded-md cursor-pointer hover:bg-red-700 transition"
           onClick={() => logoutMutation.mutate()}
         >
-          Logout
+          Đăng xuất
         </button>
       </div>
     </header>

@@ -44,7 +44,7 @@ export default function LoginPage() {
       <Card className="w-[360px] shadow-md">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-semibold">
-            Login
+            Đăng nhập
           </CardTitle>
         </CardHeader>
 
@@ -74,7 +74,7 @@ export default function LoginPage() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>Mật khẩu</FormLabel>
                     <FormControl>
                       <Input
                         type="password"
@@ -92,7 +92,7 @@ export default function LoginPage() {
                 className="w-full"
                 disabled={loginMutation.isPending}
               >
-                {loginMutation.isPending ? "Logging in..." : "Login"}
+                {loginMutation.isPending ? "Đang xác thực..." : "Đăng nhập"}
               </Button>
             </form>
           </Form>
