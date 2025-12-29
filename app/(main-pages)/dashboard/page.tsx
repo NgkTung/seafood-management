@@ -1,92 +1,125 @@
-"use client";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
-import { useProfile } from "@/hooks/auth/profile";
+// charts
+import { StockByLocationChart } from "./charts/stock-by-location";
+import { OrdersChart } from "./charts/orders";
+import { QCResultChart } from "./charts/qc-result";
+import { RevenueChart } from "./charts/revenue";
+import { StorageUtilizationChart } from "./charts/storage-utilization";
+import { ShipmentsChart } from "./charts/shipments";
 
-export default function Dashboard() {
-  const { data, isLoading } = useProfile();
+// kpis
+import { KpiCard } from "@/components/kpi-card";
 
-  if (isLoading) return "Loading...";
-  if (!data?.user) return "Unauthorized";
+// queries
+import { getStockByLocation } from "@/lib/queries/stock";
+import { getOrdersPerMonth, getRevenuePerMonth } from "@/lib/queries/orders";
+import { getQCResultSummary } from "@/lib/queries/qc";
+import {
+  getTotalInventory,
+  getOrdersThisMonth,
+  getRevenueThisMonth,
+} from "@/lib/queries/kpi";
+import { getStorageUtilization } from "@/lib/queries/storage";
+import { getShipmentsPerMonth } from "@/lib/queries/shipment";
 
-  const permissions = data.user.permissions || [];
-
-  const can = (perm: string) => {
-    if (permissions.includes("*")) return true;
-    return permissions.includes(perm);
-  };
+export default async function DashboardPage() {
+  const [
+    stockData,
+    orderData,
+    revenueData,
+    qcData,
+    inventoryTotal,
+    ordersThisMonth,
+    revenueThisMonth,
+    storageUtilization,
+    shipmentData,
+  ] = await Promise.all([
+    getStockByLocation(),
+    getOrdersPerMonth(),
+    getRevenuePerMonth(),
+    getQCResultSummary(),
+    getTotalInventory(),
+    getOrdersThisMonth(),
+    getRevenueThisMonth(),
+    getStorageUtilization(),
+    getShipmentsPerMonth(),
+  ]);
 
   return (
-    <div>
-      <h1>Dashboard</h1>
+    <div className="p-6 space-y-8">
+      <h1 className="text-2xl font-bold">Dashboard</h1>
 
-      {/* QC Section */}
-      {can("qc.create") && (
-        <section>
-          <h2>Quality Control</h2>
-          <button>Create QC Inspection</button>
-          <button>View Batches</button>
-        </section>
-      )}
+      {/* KPI ROW */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <KpiCard title="Total Inventory" value={inventoryTotal} />
+        <KpiCard title="Orders This Month" value={ordersThisMonth} />
+        <KpiCard title="Revenue This Month" value={`$${revenueThisMonth}`} />
+        <KpiCard title="QC Pass Rate" value={`${qcData[0]?.value ?? 0}%`} />
+      </div>
 
-      {/* Inventory */}
-      {can("inventory.manage") && (
-        <section>
-          <h2>Inventory Management</h2>
-          <button>View Inventory</button>
-          <button>Storage Locations</button>
-        </section>
-      )}
+      {/* INVENTORY */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Stock by Location</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <StockByLocationChart data={stockData} />
+          </CardContent>
+        </Card>
 
-      {/* Orders */}
-      {can("order.create") && (
-        <section>
-          <h2>Sales & Orders</h2>
-          <button>Create Export Order</button>
-          <button>Customers</button>
-        </section>
-      )}
+        <Card>
+          <CardHeader>
+            <CardTitle>Storage Utilization</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <StorageUtilizationChart data={storageUtilization} />
+          </CardContent>
+        </Card>
+      </div>
 
-      {/* Export Manager */}
-      {can("order.approve") && (
-        <section>
-          <h2>Approvals</h2>
-          <button>Approve Orders</button>
-        </section>
-      )}
+      {/* ORDERS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Orders per Month</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <OrdersChart data={orderData} />
+          </CardContent>
+        </Card>
 
-      {/* Reports */}
-      {can("reports.view") && (
-        <section>
-          <h2>Reports</h2>
-          <button>View Reports</button>
-          <button>Dashboard</button>
-        </section>
-      )}
+        <Card>
+          <CardHeader>
+            <CardTitle>Revenue per Month</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <RevenueChart data={revenueData} />
+          </CardContent>
+        </Card>
+      </div>
 
-      {/* Shipment */}
-      {can("shipment.manage") && (
-        <section>
-          <h2>Logistics</h2>
-          <button>Create Shipment</button>
-          <button>Documents</button>
-        </section>
-      )}
+      {/* QC + LOGISTICS */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>QC Results</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <QCResultChart data={qcData} />
+          </CardContent>
+        </Card>
 
-      {/* IT Support */}
-      {can("users.manage") && (
-        <section>
-          <h2>System Management</h2>
-          <button>User Management</button>
-        </section>
-      )}
-
-      {/* Intern */}
-      {permissions.length === 0 && (
-        <section>
-          <h2>Read Only</h2>
-          <p>You only have view permissions.</p>
-        </section>
-      )}
+        <Card>
+          <CardHeader>
+            <CardTitle>Shipments per Month</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <ShipmentsChart data={shipmentData} />
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }

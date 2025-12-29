@@ -13,10 +13,10 @@ export async function GET() {
       ORDER BY Product_ID ASC
     `;
 
-    const [rows]: any = await db.execute(query);
+    const [rows] = await db.execute(query);
 
     return NextResponse.json({ products: rows });
-  } catch (err: any) {
+  } catch (err) {
     console.error("ERROR FETCHING PRODUCTS:", err);
     return NextResponse.json(
       { error: "Failed to load products" },
