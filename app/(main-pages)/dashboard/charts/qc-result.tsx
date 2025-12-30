@@ -90,7 +90,7 @@ export function QCResultChart({ data = [] }: { data?: QCData[] }) {
           dominantBaseline="middle"
           className="fill-muted-foreground text-xs"
         >
-          Pass Rate
+          Tỉ lệ đạt
         </text>
       </PieChart>
     </ResponsiveContainer>

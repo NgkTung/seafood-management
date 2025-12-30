@@ -31,7 +31,7 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
   };
 
   const links = [
-    { href: "/dashboard", label: "Trang điều khiển", icon: Home, perm: "" },
+    { href: "/dashboard", label: "Bảng điều khiển", icon: Home, perm: "" },
     { href: "/batches", label: "Lô hàng", icon: Boxes, perm: "batch.view" },
     {
       href: "/qc",
@@ -74,7 +74,7 @@ export default function Sidebar({ mobile = false }: SidebarProps) {
     >
       <div className="px-4 py-4 border-b font-semibold text-xl flex space-x-2">
         <Shrimp />
-        <span>Seafood Management</span>
+        <span>Quản lí hải sản</span>
       </div>
 
       <nav className="flex-1 px-2 py-3 space-y-2">

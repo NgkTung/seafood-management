@@ -48,21 +48,21 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-6 space-y-8">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+      <h1 className="text-2xl font-semibold">Bảng điều khiển</h1>
 
       {/* KPI ROW */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <KpiCard title="Total Inventory" value={inventoryTotal} />
-        <KpiCard title="Orders This Month" value={ordersThisMonth} />
-        <KpiCard title="Revenue This Month" value={`$${revenueThisMonth}`} />
-        <KpiCard title="QC Pass Rate" value={`${qcData[0]?.value ?? 0}%`} />
+        <KpiCard title="Tổng hàng trong kho" value={inventoryTotal} />
+        <KpiCard title="Đơn hàng trong tháng" value={ordersThisMonth} />
+        <KpiCard title="Doanh thu trong tháng" value={`$${revenueThisMonth}`} />
+        <KpiCard title="Tỷ lệ vượt QC" value={`${qcData[0]?.value ?? 0}%`} />
       </div>
 
       {/* INVENTORY */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle>Stock by Location</CardTitle>
+            <CardTitle>Tồn kho theo vị trí</CardTitle>
           </CardHeader>
           <CardContent>
             <StockByLocationChart data={stockData} />
@@ -71,7 +71,7 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Storage Utilization</CardTitle>
+            <CardTitle>Tỷ lệ sử dụng kho</CardTitle>
           </CardHeader>
           <CardContent>
             <StorageUtilizationChart data={storageUtilization} />
@@ -83,7 +83,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Orders per Month</CardTitle>
+            <CardTitle>Đơn hàng theo tháng</CardTitle>
           </CardHeader>
           <CardContent>
             <OrdersChart data={orderData} />
@@ -92,7 +92,7 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Revenue per Month</CardTitle>
+            <CardTitle>Doanh thu theo tháng</CardTitle>
           </CardHeader>
           <CardContent>
             <RevenueChart data={revenueData} />
@@ -104,7 +104,7 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>QC Results</CardTitle>
+            <CardTitle>Kết quả QC</CardTitle>
           </CardHeader>
           <CardContent>
             <QCResultChart data={qcData} />
@@ -113,7 +113,7 @@ export default async function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Shipments per Month</CardTitle>
+            <CardTitle>Số đơn giao hàng theo tháng</CardTitle>
           </CardHeader>
           <CardContent>
             <ShipmentsChart data={shipmentData} />
