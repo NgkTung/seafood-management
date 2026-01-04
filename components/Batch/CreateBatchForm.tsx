@@ -206,7 +206,7 @@ export default function CreateBatchForm({ setIsOpen }: Props) {
             type="submit"
             className="w-full"
           >
-            {createBatch.isPending ? "Đang tạo..." : "Tạo mói"}
+            {createBatch.isPending ? "Đang tạo..." : "Tạo mới"}
           </Button>
         </form>
       </Form>

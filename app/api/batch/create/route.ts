@@ -63,9 +63,6 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("ERROR CREATING BATCH:", error);
-    return NextResponse.json(
-      { error: "Server error while creating batch" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }

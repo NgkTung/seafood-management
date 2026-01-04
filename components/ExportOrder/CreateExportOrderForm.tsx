@@ -80,7 +80,7 @@ export default function CreateExportOrderForm({ setIsOpen }: Props) {
 
       {createOrder.isSuccess && (
         <div className="bg-green-100 text-green-700 px-3 py-2 rounded-md">
-          Export order created successfully!
+          Tạo đơn xuất khẩu thành công!
         </div>
       )}
 
@@ -129,7 +129,7 @@ export default function CreateExportOrderForm({ setIsOpen }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Status <span className="text-red-500">*</span>
+                    Trạng thái <span className="text-red-500">*</span>
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -141,9 +141,9 @@ export default function CreateExportOrderForm({ setIsOpen }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Draft">Draft</SelectItem>
-                      <SelectItem value="Approved">Approved</SelectItem>
-                      <SelectItem value="Shipped">Shipped</SelectItem>
+                      <SelectItem value="Draft">Nháp</SelectItem>
+                      <SelectItem value="Approved">Đã xác nhận</SelectItem>
+                      <SelectItem value="Shipped">Đã giao hàng</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -161,7 +161,7 @@ export default function CreateExportOrderForm({ setIsOpen }: Props) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>
-                    Order Date <span className="text-red-500">*</span>
+                    Ngày đặt hàng<span className="text-red-500">*</span>
                   </FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
@@ -177,7 +177,7 @@ export default function CreateExportOrderForm({ setIsOpen }: Props) {
               name="shippingDate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Shipping Date</FormLabel>
+                  <FormLabel>Ngày giao</FormLabel>
                   <FormControl>
                     <Input type="date" {...field} />
                   </FormControl>
@@ -193,7 +193,7 @@ export default function CreateExportOrderForm({ setIsOpen }: Props) {
             type="submit"
             className="w-full"
           >
-            {createOrder.isPending ? "Creating..." : "Create Export Order"}
+            {createOrder.isPending ? "Đang tạo..." : "Tạo đơn xuất khẩu"}
           </Button>
         </form>
       </Form>
